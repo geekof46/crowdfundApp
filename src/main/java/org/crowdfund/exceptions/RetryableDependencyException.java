@@ -1,7 +1,5 @@
 package org.crowdfund.exceptions;
 
-import software.amazon.awssdk.core.exception.RetryableException;
-
 /**
  * class to throw retryable dependency exception to reprocess the request
  */
