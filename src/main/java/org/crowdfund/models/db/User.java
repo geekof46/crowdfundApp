@@ -19,6 +19,7 @@ import java.time.Instant;
 @NoArgsConstructor
 @DynamoDbImmutable(builder = User.UserBuilder.class)
 public class User {
+    public static final String TABLE_NAME = "Users";
     @Getter(onMethod = @__({@DynamoDbPartitionKey, @DynamoDbAttribute("UserID")}))
     private String userId;
     private String name;

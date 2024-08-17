@@ -21,7 +21,7 @@ import java.time.Instant;
 @NoArgsConstructor
 @DynamoDbImmutable(builder = Project.ProjectBuilder.class)
 public class Project {
-
+    public static final String TABLE_NAME = "Projects";
     public static final String INNOVATOR_ID_TO_PROJECT_ID_INDEX =
             "innovatorId-to-projectId-index";
 

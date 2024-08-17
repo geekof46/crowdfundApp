@@ -21,15 +21,12 @@ import java.time.Instant;
 @DynamoDbImmutable(builder = Donation.DonationBuilder.class)
 public class Donation {
 
+    public static final String TABLE_NAME = "Donations";
     public static final String PROJECT_ID_TO_DONATION_ID_INDEX =
             "projectId-to-donationId-index";
     public static final String DONOR_ID_TO_DONATION_ID_INDEX =
             "donarId-to-donationId-index";
-    /**
-     * //TODO add indexes
-     * projectId -> donationId
-     * donorId -> donationId
-     */
+
     @Getter(onMethod = @__({@DynamoDbPartitionKey,
             @DynamoDbSecondarySortKey(indexNames =
                     {PROJECT_ID_TO_DONATION_ID_INDEX,
