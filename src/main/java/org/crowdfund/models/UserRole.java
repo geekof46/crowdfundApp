@@ -1,4 +1,4 @@
-package org.crowdfund.models.db;
+package org.crowdfund.models;
 
 public enum UserRole {
     INNOVATOR,
