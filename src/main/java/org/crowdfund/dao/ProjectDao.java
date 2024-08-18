@@ -3,10 +3,7 @@ package org.crowdfund.dao;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.NonNull;
-import org.crowdfund.models.DonationDTO;
 import org.crowdfund.models.ProjectStatus;
-import org.crowdfund.models.UserDTO;
-import org.crowdfund.models.db.Donation;
 import org.crowdfund.models.db.Project;
 import org.crowdfund.pojo.ProjectDTO;
 import org.crowdfund.utils.ModelConvertor;
@@ -42,12 +39,22 @@ public class ProjectDao {
         return modelConvertor.convert(dynamoDBAccessor.getRecordsByPartitionKey(projectId), ProjectDTO.class);
     }
 
+    /**
+     *
+     * @param projectStatus
+     * @return
+     */
     public List<ProjectDTO> getProjectByStatus(@NonNull final ProjectStatus projectStatus){
         return dynamoDBAccessor.getRecordsByIndexPartitionKey(Project.PROJECT_STATUS_TO_PROJECT_ID_INDEX,
                 projectStatus.toString()).stream().map(record ->
                 modelConvertor.convert(record, ProjectDTO.class)).collect(Collectors.toList());
     }
 
+    /**
+     *
+     * @param innovatorId
+     * @return
+     */
     public List<ProjectDTO> getProjectByInnovatorId(@NonNull final String innovatorId){
         return dynamoDBAccessor.getRecordsByIndexPartitionKey(Project.INNOVATOR_ID_TO_PROJECT_ID_INDEX,
                 innovatorId).stream().map(record ->

@@ -1,14 +1,12 @@
 package org.crowdfund.controller;
 
-
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @RestController
 @EnableWebMvc
+@Slf4j
 public class UserController {
 
-    @Autowired
-    private DynamoDbClient dynamoDbClient;
 }

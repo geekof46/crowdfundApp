@@ -1,6 +1,10 @@
 package org.crowdfund;
 
-import org.crowdfund.dao.Customer;
+import org.crowdfund.controller.DonationController;
+import org.crowdfund.controller.ProjectController;
+import org.crowdfund.controller.UserController;
+import org.crowdfund.models.UserRole;
+import org.crowdfund.models.db.User;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -15,28 +19,15 @@ import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 
 
+/**
+ * application class
+ */
 @SpringBootApplication
-// We use direct @Import instead of @ComponentScan to speed up cold starts
-// @ComponentScan(basePackages = "org.example.controller")
-@Import({ PingController.class })
+@Import({ PingController.class, DonationController.class, ProjectController.class,
+        UserController.class})
 public class CrowdFundApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(CrowdFundApplication.class, args);
-    }
-
-    @Bean
-    public DynamoDbTable<Customer> getCustomerDynamoDbTable() {
-        // Configure an instance of the standard DynamoDbClient.
-        DynamoDbClient standardClient = DynamoDbClient.builder()
-                .region(Region.US_WEST_2)
-                .credentialsProvider(DefaultCredentialsProvider.create())
-                .build();
-
-// Use the configured standard client with the enhanced client.
-        DynamoDbEnhancedClient enhancedClient = DynamoDbEnhancedClient.builder()
-                .dynamoDbClient(standardClient)
-                .build();
-        return enhancedClient.table("Customer", TableSchema.fromImmutableClass(Customer.class));
     }
 }

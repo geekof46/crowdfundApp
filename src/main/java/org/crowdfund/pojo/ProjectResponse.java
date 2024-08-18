@@ -1,12 +1,12 @@
 package org.crowdfund.pojo;
 
 import lombok.Data;
-import org.crowdfund.models.db.ProjectStatus;
+import org.crowdfund.models.ProjectStatus;
 
 import java.time.Instant;
 
 @Data
-public class ProjectRequest {
+public class ProjectResponse {
     private String id;
     private String innovatorId;
     private Instant creationDate;

@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,9 +42,10 @@ public class DonationDao {
      * @param donarId
      * @return
      */
-   public List<Donation> getDonationByDonarId(@NonNull final String donarId){
+   public List<DonationDTO> getDonationByDonarId(@NonNull final String donarId){
        return dynamoDBAccessor.getRecordsByIndexPartitionKey(Donation.DONOR_ID_TO_DONATION_ID_INDEX,
-               donarId);
+               donarId).stream().map(record ->
+               modelConvertor.convert(record,DonationDTO.class)).collect(Collectors.toList());
    }
 
     /**
