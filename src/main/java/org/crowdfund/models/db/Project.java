@@ -24,10 +24,13 @@ public class Project {
     public static final String TABLE_NAME = "Projects";
     public static final String INNOVATOR_ID_TO_PROJECT_ID_INDEX =
             "innovatorId-to-projectId-index";
+    public static final String PROJECT_STATUS_TO_PROJECT_ID_INDEX =
+            "projectstatus-to-projectId-index";
 
     @Getter(onMethod = @__({@DynamoDbPartitionKey,
             @DynamoDbSecondarySortKey(
-                    indexNames = {INNOVATOR_ID_TO_PROJECT_ID_INDEX,})}))
+                    indexNames = {INNOVATOR_ID_TO_PROJECT_ID_INDEX,
+                            PROJECT_STATUS_TO_PROJECT_ID_INDEX})}))
     private String projectId;
     private String thumbnailLink;
     private String description;
@@ -43,6 +46,8 @@ public class Project {
      */
     private BigDecimal receivedAmount;
     private Instant donationDate;
+    @Getter(onMethod = @__({@DynamoDbSecondaryPartitionKey(
+            indexNames = {PROJECT_STATUS_TO_PROJECT_ID_INDEX,})}))
     private ProjectStatus status;
     /**
      * to manager concurrency of donation events
