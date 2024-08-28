@@ -1,33 +1,27 @@
 package org.crowdfund.pojo;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
-import org.crowdfund.models.ProjectStatus;
 
 import java.math.BigDecimal;
 import java.time.Instant;
 
-@Builder(toBuilder = true)
+@Builder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProjectDTO {
+public class ProjectCreateRequest {
     @NonNull
     private String projectId;
+    //TODO add feature to support uploading image
     private String thumbnailLink;
+    @NonNull
     private String description;
+    @NonNull
     private String innovatorId;
+    @NonNull
     private BigDecimal expectAmount;
-    /**
-     * total amount collected after donation
-     */
-    private BigDecimal receivedAmount;
-    private ProjectStatus status;
-    private Integer version;
-    private Instant createDate;
-    private Instant updateDate;
 }

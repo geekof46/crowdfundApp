@@ -10,7 +10,6 @@ import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * dao layer class to to do CURD on donation db
@@ -35,28 +34,11 @@ public class DonationDao {
        dynamoDBAccessor.putItem(modelConvertor.convert(donationDTO, Donation.class));
    }
 
+    public List<DonationDTO> getDonationByProjectId(@NonNull String projectId) {
+         return List.of();
+    }
 
-    /**
-     * method to get all donations done by donarId
-     *  <TODO add pagination support></>
-     * @param donarId
-     * @return
-     */
-   public List<DonationDTO> getDonationByDonarId(@NonNull final String donarId){
-       return dynamoDBAccessor.getRecordsByIndexPartitionKey(Donation.DONOR_ID_TO_DONATION_ID_INDEX,
-               donarId).stream().map(record ->
-               modelConvertor.convert(record,DonationDTO.class)).collect(Collectors.toList());
-   }
-
-    /**
-     * method to get all donations done on Project
-     * <TODO add pagination support></>
-     * @param projectId
-     * @return list of donations
-     */
-    public List<DonationDTO> getDonationByProjectId(@NonNull final String projectId){
-       return dynamoDBAccessor.getRecordsByIndexPartitionKey(Donation.PROJECT_ID_TO_DONATION_ID_INDEX,
-               projectId).stream().map(record ->
-               modelConvertor.convert(record,DonationDTO.class)).collect(Collectors.toList());
+    public List<DonationDTO> getDonationByDonarId(@NonNull String donorId) {
+        return List.of();
     }
 }
