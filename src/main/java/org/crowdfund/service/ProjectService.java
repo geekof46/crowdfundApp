@@ -4,15 +4,17 @@ import lombok.NonNull;
 import lombok.extern.log4j.Log4j2;
 import org.crowdfund.dao.ProjectDao;
 import org.crowdfund.exceptions.InvalidRequestException;
-import org.crowdfund.exceptions.ProjectNotFoundException;
-import org.crowdfund.models.DonationDTO;
+import org.crowdfund.models.PaginatedResultDTO;
+import org.crowdfund.models.ProjectDTO;
+import org.crowdfund.models.ProjectSaveDTO;
 import org.crowdfund.models.ProjectStatus;
-import org.crowdfund.pojo.ProjectDTO;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.List;
 
+/**
+ * service class to manage create/update project operations
+ */
 @Log4j2
 @Service
 public class ProjectService {
@@ -24,30 +26,23 @@ public class ProjectService {
         this.projectDao = projectDao;
     }
 
+
     /**
-     * @param projectDTO
+     * method to save project
+     *
+     * @param projectSaveDTO project object to be saved
      */
-    public void save(@NonNull final ProjectDTO projectDTO) {
-        projectDao.save(projectDTO);
+    public void save(@NonNull final ProjectSaveDTO projectSaveDTO) {
+        projectDao.save(projectSaveDTO);
     }
 
 
-    public List<ProjectDTO> getProjectsByStatus(@NonNull final ProjectStatus status,
-                                                final Integer limit,
-                                                final String next) {
-        return projectDao.getProjectsByStatus(status,
-                limit, next);
-    }
-
-
-    public List<ProjectDTO> getProjectsByInnovatorIdAndStatus(
-            @NonNull final String innovatorId,
-            @NonNull final ProjectStatus status,
-            @NonNull final Integer limit,
-            @NonNull final String next) {
+    public PaginatedResultDTO<ProjectDTO> getProjectsByInnovatorIdAndStatus(@NonNull final String innovatorId,
+                                                                            @NonNull final ProjectStatus status,
+                                                                            final Integer limit,
+                                                                            final String next) {
         return projectDao.getProjectsByInnovatorIdAndStatus(innovatorId,
-                status,
-                limit, next);
+                status, limit, next);
     }
 
     /**
@@ -59,45 +54,31 @@ public class ProjectService {
         return projectDao.getProjectById(projectId);
     }
 
-    public void addDonationToProject(DonationDTO donationDTO) {
-
-        /**
-         * TODO changes input to request object
-         */
-        ProjectDTO projectDTO = projectDao.getProjectById("ProjectId");
-        final BigDecimal amountTobeUpdated = projectDTO.getReceivedAmount().add(donationDTO.getDonationAmount());
-        if (amountTobeUpdated.compareTo(projectDTO.getExpectAmount()) == 1) {
-            // throw error amount is greater
-
+    public void updateProjectForDonationAmount(@NonNull final String projectId,
+                                               @NonNull BigDecimal donationAmount) {
+        //get project for donation
+        final ProjectDTO projectDTO = projectDao.getProjectById(projectId);
+        if (projectDTO == null) {
+            throw new InvalidRequestException("Invalid request : Project not found");
         }
-        //TODO create new object for save
-//        projectDTO.setReceivedAmount(amountTobeUpdated);
-//        projectDTO.setVersion(projectDTO.getVersion()+1);
-//        projectDao.save(projectDTO);
-//        donationDao.save(donationDTO);
+
+        if (ProjectStatus.ARCHIVED.equals(projectDTO.getStatus())) {
+            throw new InvalidRequestException("Invalid Request : Project is archived no any further " +
+                    "donation can be accepted");
+        }
+
+        final ProjectDTO.ProjectDTOBuilder updatedObject = projectDTO.toBuilder();
+        final BigDecimal updatedDonationAmount = projectDTO.getReceivedDonationAmount().add(donationAmount);
+        if (updatedDonationAmount.compareTo(projectDTO.getRequestedAmount()) >= 0) {
+            updatedObject.status(ProjectStatus.ARCHIVED);
+        }
+        projectDao.updateProject(updatedObject.receivedDonationAmount(updatedDonationAmount).build());
     }
 
-    public void updateProject(@NonNull final ProjectDTO requestDTO) {
-        try {
-            final ProjectDTO projectDTO = projectDao.getProjectById(requestDTO.getProjectId());
-
-            //TODO validated all fields and update
-            //TODO also handle for concurrent update we should fail this and will be retried
-            final ProjectDTO.ProjectDTOBuilder updatedDTO = projectDTO.toBuilder();
-            if (requestDTO.getStatus() != null) {
-                updatedDTO.status(requestDTO.getStatus());
-            }
-
-            if (requestDTO.getReceivedAmount() != null) {
-                updatedDTO.receivedAmount(requestDTO.getReceivedAmount());
-            }
-            projectDao.save(updatedDTO.build());
-
-        } catch (final ProjectNotFoundException e) {
-            throw new InvalidRequestException("Invalid request with projectId " +
-                    requestDTO.getProjectId());
-        }
+    public PaginatedResultDTO<ProjectDTO> getProjectForDonation(@NonNull final String userId,
+                                                                @NonNull final ProjectStatus projectStatus,
+                                                                @NonNull Integer pageSize,
+                                                                @NonNull final String next) {
+        return projectDao.getProjectsStatusForDonation(userId, projectStatus, pageSize, next);
     }
-
-
 }

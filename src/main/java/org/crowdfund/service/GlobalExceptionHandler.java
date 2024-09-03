@@ -1,6 +1,8 @@
-package org.crowdfund.controller;
+package org.crowdfund.service;
 
 import lombok.NonNull;
+import lombok.extern.log4j.Log4j2;
+import org.crowdfund.exceptions.InvalidRequestException;
 import org.crowdfund.exceptions.NonRetryableException;
 import org.crowdfund.exceptions.ProjectNotFoundException;
 import org.crowdfund.exceptions.RetryableException;
@@ -9,15 +11,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import software.amazon.awssdk.services.dynamodb.model.ConditionalCheckFailedException;
-
-
 
 /**
  * class for global exception handling
  * TODO modify exception handling
  */
 @ControllerAdvice
+@Log4j2
 public class GlobalExceptionHandler {
 
     @ExceptionHandler({UserNotFoundException.class})
@@ -30,7 +30,6 @@ public class GlobalExceptionHandler {
         return getRecordNotFoundResponse(e);
     }
 
-
     private ResponseEntity<Object> getRecordNotFoundResponse(@NonNull final Exception e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(e.getMessage());
@@ -42,22 +41,30 @@ public class GlobalExceptionHandler {
                 .body(e.getMessage());
     }
 
-    @ExceptionHandler({ConditionalCheckFailedException.class})
-    public ResponseEntity<Object> handleConditionalCheckFailedException(@NonNull final ConditionalCheckFailedException e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(e.getMessage());
-    }
-
     @ExceptionHandler({RetryableException.class})
     public ResponseEntity<Object> handleRetryableException(@NonNull final RetryableException e) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(e.getMessage());
+        log.info(e.getMessage());
+        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
+                .body("Retry after sometime , failed with error " + e.getMessage() +
+                        (e.getCause() != null ? e.getCause().getMessage() : ""));
     }
 
     @ExceptionHandler({NonRetryableException.class})
     public ResponseEntity<Object> handleNonRetryableException(@NonNull final NonRetryableException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(e.getMessage());
+                .body(e.getMessage() + (e.getCause() != null ? e.getCause().getMessage() : ""));
     }
+
+    @ExceptionHandler({InvalidRequestException.class})
+    public ResponseEntity<Object> handleInvalidRequestException(@NonNull final InvalidRequestException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(e.getMessage() + (e.getCause() != null ? e.getCause().getMessage() : ""));
+    }
+
+//    @ExceptionHandler(value = Exception.class)
+//    public ResponseEntity<Object> handleException(Exception e) {
+//        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Unexpected error occurred" +
+//                (e.getCause() != null ? e.getCause().getMessage() : ""));
+//    }
 
 }

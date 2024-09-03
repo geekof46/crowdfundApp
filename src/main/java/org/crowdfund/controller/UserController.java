@@ -2,13 +2,14 @@ package org.crowdfund.controller;
 
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
-import org.crowdfund.models.ProjectStatus;
-import org.crowdfund.models.UserRole;
-import org.crowdfund.models.db.User;
-import org.crowdfund.pojo.ProjectDTO;
-import org.crowdfund.pojo.UserDTO;
+import org.crowdfund.exceptions.InvalidRequestException;
+import org.crowdfund.models.UserDTO;
 import org.crowdfund.pojo.UserCreateRequest;
+import org.crowdfund.pojo.UserSaveDTO;
 import org.crowdfund.service.UserService;
+import org.crowdfund.utils.UniqueIdGenerator;
+import org.crowdfund.utils.ValidatorUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,12 +17,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-
-import java.time.Instant;
-import java.util.List;
 
 /**
  * Controller class for User
@@ -32,45 +29,19 @@ import java.util.List;
 @RequestMapping("/api/v1")
 public class UserController {
 
+    private static final @NonNull String USER_ID_PREFIX = "USER-";
     private final UserService userService;
 
-    public UserController(@NonNull final UserService userService) {this.userService = userService;}
+    @Autowired
+    public UserController(@NonNull final UserService userService) {
+        this.userService = userService;
+    }
 
-    @GetMapping("/user/{userId}")
+    @GetMapping("/users/{userId}")
     public ResponseEntity<UserDTO> getUserById(@PathVariable String userId) {
-        return ResponseEntity.ok().body(userService.getUserById(userId));
+        return ResponseEntity.ok()
+                .body(userService.getUserById(userId));
     }
-
-    @GetMapping("/user/{userId}/project")
-    public ResponseEntity<List<ProjectDTO>> getProjectsByStatus(
-            @PathVariable String userId,
-            @RequestParam("status") @NonNull final String status,
-            @RequestParam("limit") @NonNull final Integer limit,
-            @RequestParam("next") final String next
-    ) {
-        return ResponseEntity.ok(userService.getProjectsByStatus(userId,
-                ProjectStatus.valueOf(status),
-                limit,next));
-    }
-
-    /**
-     * method to get User by UserRole
-     *
-     * @param role  user role
-     * @param limit no of records per page
-     * @param next  next sort key for fetching next set of records
-     * @return list of users
-     */
-    @GetMapping("/user")
-    public ResponseEntity<List<User>> getUserByRole(
-            @RequestParam("role") final String role,
-            @RequestParam("limit") @NonNull final Integer limit,
-            @RequestParam("next") final String next) {
-
-        return ResponseEntity.ok(userService.getUserByRole(role,
-                limit, next));
-    }
-
 
     /**
      * method to add new user
@@ -78,10 +49,10 @@ public class UserController {
      * @param putRequest
      * @return
      */
-    @PostMapping("/user")
+    @PostMapping("/users")
     public ResponseEntity<Object> addUser(@RequestBody @NonNull final UserCreateRequest putRequest) {
 
-        userService.save(buildUserDTO(putRequest));
+        userService.save(buildUserSaveDTO(putRequest));
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body("User created successfully");
     }
@@ -89,15 +60,20 @@ public class UserController {
     /**
      * method to build put object from request
      *
-     * @param putRequest
-     * @return
+     * @param request create user request object
+     * @return built UserSaveDTO from request object
      */
-    private @NonNull UserDTO buildUserDTO(@NonNull final UserCreateRequest putRequest) {
-        //TODO add more fields
-        return UserDTO.builder()
-                .userId(putRequest.getUserId())
-                .name(putRequest.getName())
-                .role(UserRole.valueOf(putRequest.getRole()))
+    private @NonNull UserSaveDTO buildUserSaveDTO(@NonNull final UserCreateRequest request) {
+
+        final UserSaveDTO.UserSaveDTOBuilder builder = UserSaveDTO.builder()
+                .userId(UniqueIdGenerator.generateUUID(USER_ID_PREFIX));
+
+        if (!ValidatorUtil.isValidEmailId(request.getEmailId())) {
+            throw new InvalidRequestException("Invalid input field : emailId");
+        }
+
+        return builder.emailId(request.getEmailId().trim())
+                .name(request.getName())
                 .build();
     }
 

@@ -1,12 +1,10 @@
-package org.crowdfund.pojo;
+package org.crowdfund.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.crowdfund.models.UserRole;
 
 import java.time.Instant;
 
@@ -17,11 +15,11 @@ import java.time.Instant;
 @NoArgsConstructor
 public class UserDTO {
     private String userId;
+    private String emailId;
     private String name;
-    private String alias;
-    private UserRole role;
-    private Instant createDate;
-    private Integer version;
+    private String phoneNumber;
     private String bankAccountNumber;
+    private Integer version;
+    private Instant createDate;
     private Instant updateDate;
 }
