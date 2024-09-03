@@ -3,6 +3,8 @@ package org.crowdfund.service;
 import lombok.NonNull;
 import lombok.extern.log4j.Log4j2;
 import org.crowdfund.dao.UserDao;
+import org.crowdfund.exceptions.InvalidRequestException;
+import org.crowdfund.exceptions.UserNotFoundException;
 import org.crowdfund.models.UserDTO;
 import org.crowdfund.pojo.UserSaveDTO;
 import org.springframework.stereotype.Service;
@@ -24,8 +26,13 @@ public class UserService {
      * @param userSaveDTO
      */
     public void save(@NonNull final UserSaveDTO userSaveDTO) {
-        //TODO add validation that no record exist for same emailId
-        userDao.save(userSaveDTO);
+        try{
+            userDao.getUserById(userSaveDTO.getEmailId());
+            throw new InvalidRequestException("User already exist with emailId "+userSaveDTO.getEmailId());
+        }catch(final UserNotFoundException e){
+            userDao.save(userSaveDTO);
+        }
+
     }
 
     /**

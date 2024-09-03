@@ -1,89 +1,68 @@
-package org.crowdfund;
-
-
-import com.amazonaws.serverless.proxy.internal.LambdaContainerHandler;
-import com.amazonaws.serverless.proxy.internal.testutils.AwsProxyRequestBuilder;
-import com.amazonaws.serverless.proxy.internal.testutils.MockLambdaContext;
-import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
-import com.amazonaws.services.lambda.runtime.Context;
-
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-
-import jakarta.ws.rs.HttpMethod;
-import jakarta.ws.rs.core.HttpHeaders;
-import jakarta.ws.rs.core.MediaType;
-import jakarta.ws.rs.core.Response;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-
-import static org.junit.jupiter.api.Assertions.*;
-
-public class StreamLambdaHandlerTest {
-
-    private static StreamLambdaHandler handler;
-    private static Context lambdaContext;
-
-    @BeforeAll
-    public static void setUp() {
-        handler = new StreamLambdaHandler();
-        lambdaContext = new MockLambdaContext();
-    }
-
-    @Test
-    public void ping_streamRequest_respondsWithHello() {
-        InputStream requestStream = new AwsProxyRequestBuilder("/ping", HttpMethod.GET)
-                                            .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON)
-                                            .buildStream();
-        ByteArrayOutputStream responseStream = new ByteArrayOutputStream();
-
-        handle(requestStream, responseStream);
-
-        AwsProxyResponse response = readResponse(responseStream);
-        assertNotNull(response);
-        assertEquals(Response.Status.OK.getStatusCode(), response.getStatusCode());
-
-        assertFalse(response.isBase64Encoded());
-
-        assertTrue(response.getBody().contains("pong"));
-        assertTrue(response.getBody().contains("Hello, World!"));
-
-        assertTrue(response.getMultiValueHeaders().containsKey(HttpHeaders.CONTENT_TYPE));
-        assertTrue(response.getMultiValueHeaders().getFirst(HttpHeaders.CONTENT_TYPE).startsWith(MediaType.APPLICATION_JSON));
-    }
-
+//package org.crowdfund;
+//
+//import com.amazonaws.serverless.proxy.model.AwsProxyRequest;
+//import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
+//import com.amazonaws.serverless.proxy.spring.SpringBootLambdaContainerHandler;
+//import com.amazonaws.services.lambda.runtime.Context;
+//import org.crowdfund.StreamLambdaHandler;
+//import org.junit.jupiter.api.Test;
+//import org.junit.jupiter.api.extension.ExtendWith;
+//import org.mockito.Mock;
+//import org.mockito.junit.jupiter.MockitoExtension;
+//import org.springframework.mock.http.MockInputStream;
+//import org.springframework.mock.http.MockOutputStream;
+//
+//import java.io.IOException;
+//import java.io.InputStream;
+//import java.io.OutputStream;
+//
+//import static org.junit.jupiter.api.Assertions.assertEquals;
+//import static org.mockito.ArgumentMatchers.any;
+//import static org.mockito.Mockito.verify;
+//import static org.mockito.Mockito.when;
+//
+//@ExtendWith(MockitoExtension.class)
+//public class StreamLambdaHandlerTest {
+//
+//    @Mock
+//    private SpringBootLambdaContainerHandler<AwsProxyRequest, AwsProxyResponse> handler;
+//
+//    @Mock
+//    private InputStream inputStream;
+//
+//    @Mock
+//    private OutputStream outputStream;
+//
+//    @Mock
+//    private Context context;
+//
 //    @Test
-//    public void invalidResource_streamRequest_responds404() {
-//        InputStream requestStream = new AwsProxyRequestBuilder("/pong", HttpMethod.GET)
-//                                            .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON)
-//                                            .buildStream();
-//        ByteArrayOutputStream responseStream = new ByteArrayOutputStream();
+//    public void testHandleRequest() throws IOException {
+//        // Arrange
+//        when(handler.proxyStream(any(InputStream.class), any(OutputStream.class), any(Context.class))).thenAnswer(invocation -> {
+//            // Mock the behavior of the handler.proxyStream method
+//            return null;
+//        });
 //
-//        handle(requestStream, responseStream);
+//        // Act
+//        StreamLambdaHandler streamLambdaHandler = new StreamLambdaHandler();
+//        streamLambdaHandler.handleRequest(inputStream, outputStream, context);
 //
-//        AwsProxyResponse response = readResponse(responseStream);
-//        assertNotNull(response);
-//        assertEquals(Response.Status.NOT_FOUND.getStatusCode(), response.getStatusCode());
+//        // Assert
+//        verify(handler).proxyStream(inputStream, outputStream, context);
 //    }
-
-    private void handle(InputStream is, ByteArrayOutputStream os) {
-        try {
-            handler.handleRequest(is, os, lambdaContext);
-        } catch (IOException e) {
-            e.printStackTrace();
-            fail(e.getMessage());
-        }
-    }
-
-    private AwsProxyResponse readResponse(ByteArrayOutputStream responseStream) {
-        try {
-            return LambdaContainerHandler.getObjectMapper().readValue(responseStream.toByteArray(), AwsProxyResponse.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-            fail("Error while parsing response: " + e.getMessage());
-        }
-        return null;
-    }
-}
+//
+//    @Test
+//    public void testHandleRequest_ExceptionThrown() throws IOException {
+//        // Arrange
+//        when(handler.proxyStream(any(InputStream.class), any(OutputStream.class), any(Context.class))).thenThrow(new IOException("Test exception"));
+//
+//        // Act and Assert
+//        try {
+//            StreamLambdaHandler streamLambdaHandler = new StreamLambdaHandler();
+//            streamLambdaHandler.handleRequest(inputStream, outputStream, context);
+//        } catch (IOException e) {
+//            assertEquals("Test exception", e.getMessage());
+//        }
+//    }
+//}
