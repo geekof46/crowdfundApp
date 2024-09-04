@@ -74,10 +74,7 @@ public class DonationController {
         //TODO add donationId as userId who is calling API
         donationService.saveDonation(buildDonationSaveDTO(request, "donorId", projectId));
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(Response.builder()
-                        .success(true)
-                        .message("Donation done successfully")
-                        .build());
+                .body("Donation done successfully");
     }
 
     /**

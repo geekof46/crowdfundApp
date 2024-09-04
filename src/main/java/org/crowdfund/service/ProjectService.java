@@ -55,11 +55,15 @@ public class ProjectService {
     }
 
     public void updateProjectForDonationAmount(@NonNull final String projectId,
+                                               @NonNull final String donorId,
                                                @NonNull BigDecimal donationAmount) {
         //get project for donation
         final ProjectDTO projectDTO = projectDao.getProjectById(projectId);
         if (projectDTO == null) {
             throw new InvalidRequestException("Invalid request : Project not found");
+        }
+        if(projectDTO.getInnovatorId().equalsIgnoreCase(donorId)){
+            throw new InvalidRequestException("Invalid request : Project belongs to same user");
         }
 
         if (ProjectStatus.ARCHIVED.equals(projectDTO.getStatus())) {
@@ -79,6 +83,6 @@ public class ProjectService {
                                                                 @NonNull final ProjectStatus projectStatus,
                                                                 @NonNull Integer pageSize,
                                                                 @NonNull final String next) {
-        return projectDao.getProjectsStatusForDonation(userId, projectStatus, pageSize, next);
+        return projectDao.getProjectsByStatusForDonation(userId, projectStatus, pageSize, next);
     }
 }

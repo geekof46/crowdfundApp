@@ -1,7 +1,6 @@
 package org.crowdfund.dao;
 
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.NonNull;
 import org.crowdfund.exceptions.InvalidRequestException;
 import org.crowdfund.exceptions.ProjectNotFoundException;
@@ -12,13 +11,10 @@ import org.crowdfund.models.ProjectSaveDTO;
 import org.crowdfund.models.ProjectStatus;
 import org.crowdfund.models.db.PaginatedResult;
 import org.crowdfund.models.db.Project;
-import org.crowdfund.models.db.User;
 import org.crowdfund.utils.AttributeValueUtil;
 import org.crowdfund.utils.ModelConvertor;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
-import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
-import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.Expression;
 import software.amazon.awssdk.enhanced.dynamodb.Key;
 import software.amazon.awssdk.enhanced.dynamodb.model.QueryConditional;
@@ -131,7 +127,7 @@ public class ProjectDao {
      * @param nextKey
      * @return
      */
-    public PaginatedResultDTO<ProjectDTO> getProjectsStatusForDonation(
+    public PaginatedResultDTO<ProjectDTO> getProjectsByStatusForDonation(
             @NonNull final String innovatorId,
             @NonNull final ProjectStatus status,
             @NonNull final Integer pageSize,
@@ -150,7 +146,6 @@ public class ProjectDao {
                 .limit(pageSize)
                 .scanIndexForward(true);
 
-        Map<String, AttributeValue> lastEvaluatedKey = null;
         if (StringUtils.hasText(nextKey)) {
             String[] decrepatedKey = AttributeValueUtil.decryptLastEvaluatedKey(nextKey).split(",");
             queryReqBuilder.exclusiveStartKey(ImmutableMap.of(

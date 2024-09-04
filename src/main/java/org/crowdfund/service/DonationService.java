@@ -34,6 +34,7 @@ public class DonationService {
      */
     public void saveDonation(@NonNull final DonationSaveDTO donationSaveDTO) {
         projectService.updateProjectForDonationAmount(donationSaveDTO.getProjectId(),
+                donationSaveDTO.getDonorId(),
                 donationSaveDTO.getDonationAmount());
         donationDao.save(donationSaveDTO);
     }
