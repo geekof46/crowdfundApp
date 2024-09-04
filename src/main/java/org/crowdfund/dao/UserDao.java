@@ -1,9 +1,7 @@
 package org.crowdfund.dao;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
-import org.crowdfund.exceptions.InvalidRequestException;
 import org.crowdfund.exceptions.RecordNotFoundException;
 import org.crowdfund.exceptions.UserNotFoundException;
 import org.crowdfund.models.UserDTO;
@@ -11,12 +9,6 @@ import org.crowdfund.models.db.User;
 import org.crowdfund.pojo.UserSaveDTO;
 import org.crowdfund.utils.ModelConvertor;
 import org.springframework.stereotype.Repository;
-import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
-import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
-import software.amazon.awssdk.enhanced.dynamodb.Expression;
-import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
-
-import java.util.Map;
 
 import static org.crowdfund.models.db.User.EMAIL_ID;
 
@@ -29,13 +21,6 @@ public class UserDao {
 
     private final DBAccessor<User> dynamoDBAccessor;
     private final ModelConvertor modelConvertor;
-
-    public UserDao(@NonNull final DynamoDbEnhancedClient dbEnhancedClient,
-                   @NonNull final DynamoDbTable<User> dynamoDbTable,
-                   @NonNull final ObjectMapper objectMapper) {
-        this.dynamoDBAccessor = new DBAccessor<>(dbEnhancedClient, dynamoDbTable);
-        this.modelConvertor = new ModelConvertor(objectMapper);
-    }
 
     public UserDao(@NonNull final DBAccessor<User> dynamoDBAccessor,
                    @NonNull final ModelConvertor modelConvertor) {

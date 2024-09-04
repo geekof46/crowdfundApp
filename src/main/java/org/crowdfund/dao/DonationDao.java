@@ -35,14 +35,6 @@ public class DonationDao {
     private final DBAccessor<Donation> dynamoDBAccessor;
     private final ModelConvertor modelConvertor;
 
-    @Autowired
-    public DonationDao(@NonNull final DynamoDbEnhancedClient dbEnhancedClient,
-                       @NonNull final DynamoDbTable<Donation> dynamoDbTable,
-                       @NonNull final ObjectMapper objectMapper) {
-        this.dynamoDBAccessor = new DBAccessor<>(dbEnhancedClient, dynamoDbTable);
-        this.modelConvertor = new ModelConvertor(objectMapper);
-    }
-
     public DonationDao(@NonNull final DBAccessor<Donation> dynamoDBAccessor,
                       @NonNull final ModelConvertor modelConvertor) {
         this.dynamoDBAccessor = dynamoDBAccessor;

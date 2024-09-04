@@ -44,13 +44,6 @@ public class ProjectDao {
     private final DBAccessor<Project> dynamoDBAccessor;
     private final ModelConvertor modelConvertor;
 
-    public ProjectDao(@NonNull final DynamoDbEnhancedClient dbEnhancedClient,
-                      @NonNull final DynamoDbTable<Project> dynamoDbTable,
-                      @NonNull final ObjectMapper objectMapper) {
-        this.dynamoDBAccessor = new DBAccessor<>(dbEnhancedClient, dynamoDbTable);
-        this.modelConvertor = new ModelConvertor(objectMapper);
-    }
-
     public ProjectDao(@NonNull final DBAccessor<Project> dynamoDBAccessor,
                    @NonNull final ModelConvertor modelConvertor) {
         this.dynamoDBAccessor = dynamoDBAccessor;

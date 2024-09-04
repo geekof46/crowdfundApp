@@ -20,6 +20,7 @@ public class CommonConfig {
                 .registerModule(new JavaTimeModule());
     }
 
+    @Bean
     public ModelConvertor getModelConvertor(@NonNull final ObjectMapper mapper) {
         return new ModelConvertor(mapper);
     }
