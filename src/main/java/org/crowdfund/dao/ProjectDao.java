@@ -40,6 +40,12 @@ public class ProjectDao {
     private final DBAccessor<Project> dynamoDBAccessor;
     private final ModelConvertor modelConvertor;
 
+    /**
+     * Instantiates a new Project dao.
+     *
+     * @param dynamoDBAccessor the dynamo db accessor
+     * @param modelConvertor   the model convertor
+     */
     public ProjectDao(@NonNull final DBAccessor<Project> dynamoDBAccessor,
                    @NonNull final ModelConvertor modelConvertor) {
         this.dynamoDBAccessor = dynamoDBAccessor;
@@ -73,6 +79,15 @@ public class ProjectDao {
         }
     }
 
+    /**
+     * Gets projects by innovator id and status.
+     *
+     * @param innovatorId the innovator id
+     * @param status      the status
+     * @param pageSize    the page size
+     * @param nextKey     the next key
+     * @return the projects by innovator id and status
+     */
     public PaginatedResultDTO<ProjectDTO> getProjectsByInnovatorIdAndStatus(
             @NonNull final String innovatorId,
             @NonNull final ProjectStatus status,
@@ -121,11 +136,11 @@ public class ProjectDao {
     /**
      * get all project status requested except project created by user who is donating
      *
-     * @param innovatorId
-     * @param status
-     * @param pageSize
-     * @param nextKey
-     * @return
+     * @param innovatorId the innovator id
+     * @param status      the status
+     * @param pageSize    the page size
+     * @param nextKey     the next key
+     * @return projects by status for donation
      */
     public PaginatedResultDTO<ProjectDTO> getProjectsByStatusForDonation(
             @NonNull final String innovatorId,
@@ -169,6 +184,11 @@ public class ProjectDao {
                 .toList(), getNext(result.getLastEvaluatedKey()));
     }
 
+    /**
+     * Update project.
+     *
+     * @param projectDTO the project dto
+     */
     public void updateProject(@NonNull final ProjectDTO projectDTO) {
         dynamoDBAccessor.updateItem(modelConvertor.convert(projectDTO, Project.class),
                 projectDTO.getVersion(), Project.class);

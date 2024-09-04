@@ -16,6 +16,11 @@ import org.springframework.context.annotation.Import;
 @Import({PingController.class, ProjectController.class,
         UserController.class, DonationController.class})
 public class CrowdFundApplication {
+    /**
+     * The entry point of application.
+     *
+     * @param args the input arguments
+     */
     public static void main(String[] args) {
         SpringApplication.run(CrowdFundApplication.class, args);
     }

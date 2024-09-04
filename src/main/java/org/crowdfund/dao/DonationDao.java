@@ -35,6 +35,12 @@ public class DonationDao {
     private final DBAccessor<Donation> dynamoDBAccessor;
     private final ModelConvertor modelConvertor;
 
+    /**
+     * Instantiates a new Donation dao.
+     *
+     * @param dynamoDBAccessor the dynamo db accessor
+     * @param modelConvertor   the model convertor
+     */
     public DonationDao(@NonNull final DBAccessor<Donation> dynamoDBAccessor,
                       @NonNull final ModelConvertor modelConvertor) {
         this.dynamoDBAccessor = dynamoDBAccessor;
@@ -44,7 +50,7 @@ public class DonationDao {
     /**
      * method to create new donation record
      *
-     * @param donationSaveDTO
+     * @param donationSaveDTO the donation save dto
      */
     public void save(@NonNull final DonationSaveDTO donationSaveDTO) {
         dynamoDBAccessor.putItem(modelConvertor.convert(donationSaveDTO, Donation.class),
@@ -52,6 +58,14 @@ public class DonationDao {
                 Donation.class);
     }
 
+    /**
+     * Gets by project id.
+     *
+     * @param projectId the project id
+     * @param pageSize  the page size
+     * @param nextKey   the next key
+     * @return the by project id
+     */
     public PaginatedResultDTO<DonationDTO> getByProjectId(@NonNull final String projectId,
                                                           @NonNull final Integer pageSize,
                                                           @NonNull final String nextKey) {
@@ -72,6 +86,14 @@ public class DonationDao {
                 .toList(), getNext(result.getLastEvaluatedKey()));
     }
 
+    /**
+     * Gets by donor id.
+     *
+     * @param donorId  the donor id
+     * @param pageSize the page size
+     * @param nextKey  the next key
+     * @return the by donor id
+     */
     public PaginatedResultDTO<DonationDTO> getByDonorId(@NonNull String donorId,
                                                         @NonNull final Integer pageSize,
                                                         @NonNull final String nextKey) {

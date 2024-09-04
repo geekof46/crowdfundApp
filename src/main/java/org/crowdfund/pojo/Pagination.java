@@ -4,6 +4,9 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Builder;
 import lombok.ToString;
 
+/**
+ * The type Pagination.
+ */
 @Builder
 @ToString
 @JsonSerialize

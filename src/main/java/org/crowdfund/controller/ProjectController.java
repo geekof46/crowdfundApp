@@ -41,6 +41,11 @@ public class ProjectController {
     private static final String PROJECT_ID_PREFIX = "PROJ-";
     private final ProjectService projectService;
 
+    /**
+     * Instantiates a new Project controller.
+     *
+     * @param projectService the project service
+     */
     @Autowired
     public ProjectController(ProjectService projectService) {
         this.projectService = projectService;
@@ -49,9 +54,10 @@ public class ProjectController {
     /**
      * method to get projects by status
      *
-     * @param status   status of project
-     * @param pageSize no of records per page
-     * @param next     sort key of next record to fetch
+     * @param innovatorId the innovator id
+     * @param status      status of project
+     * @param pageSize    no of records per page
+     * @param next        sort key of next record to fetch
      * @return list of projects
      */
     @GetMapping("/users/{innovatorId}/projects")
@@ -74,9 +80,11 @@ public class ProjectController {
      * @param status   status of project
      * @param pageSize no of records per page
      * @param next     sort key of next record to fetch
+     * @param userId   the user id
      * @return list of projects
      */
     //TODO we can improve this api later to support different filtering for projects
+    // long term - served through ES query
     @GetMapping("/projects")
     public ResponseEntity<PaginatedResultDTO<ProjectDTO>> getProjectsForDonation(
             @RequestParam("status") @NonNull final String status,
@@ -109,7 +117,8 @@ public class ProjectController {
     /**
      * method to add new project
      *
-     * @param request project create request
+     * @param innovatorId the innovator id
+     * @param request     project create request
      * @return response with success or failure
      */
     @PostMapping("/users/{innovatorId}/projects")
@@ -129,7 +138,7 @@ public class ProjectController {
      * @param request object to save Project
      * @return object of type ProjectSaveDTO
      */
-    private @NonNull ProjectSaveDTO buildProjectSaveDTO(@NonNull final ProjectSaveRequest request) {
+    @NonNull ProjectSaveDTO buildProjectSaveDTO(@NonNull final ProjectSaveRequest request) {
 
         final Instant currentSystemTime = Instant.now();
         final ProjectSaveDTO.ProjectSaveDTOBuilder projectSaveDTOBuilder = ProjectSaveDTO.builder()
@@ -145,12 +154,15 @@ public class ProjectController {
             throw new InvalidRequestException("Project expected donation amount should be non zero positive value");
         }
 
-        final ProjectCategory category = ProjectCategoryUtil.getProjectCategory(request.getCategory()
-                .toUpperCase().trim());
+        if(request.getCategory() != null){
+            final ProjectCategory category = ProjectCategoryUtil.getProjectCategory(request.getCategory()
+                    .toUpperCase().trim());
+            projectSaveDTOBuilder.category(category);
+            projectSaveDTOBuilder.subCategory(ProjectCategoryUtil.getProjectSubCategory(category,
+                    request.getSubCategory().toUpperCase()).toString());
+        }
+
         projectSaveDTOBuilder.name(request.getName());
-        projectSaveDTOBuilder.category(category);
-        projectSaveDTOBuilder.subCategory(ProjectCategoryUtil.getProjectSubCategory(category,
-                request.getSubCategory().toUpperCase()).toString());
 
         return projectSaveDTOBuilder
                 .requestedAmount(request.getRequestedAmount())

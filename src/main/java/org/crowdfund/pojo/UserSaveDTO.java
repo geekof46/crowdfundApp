@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.ToString;
 
+/**
+ * The type User save dto.
+ */
 @ToString
 @Builder
 @Getter

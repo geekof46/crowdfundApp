@@ -36,17 +36,26 @@ import java.util.Map;
 /**
  * Dynamodb accessor generic class
  *
- * @param <T>
+ * @param <T> the type parameter
  */
 @Log4j2
 public class DBAccessor<T> {
 
-    //private static final Logger logger = LoggerFactory.getLogger(HandlerS3.class);
+    /**
+     * The constant BATCH_WRITE_LIMIT.
+     */
+//private static final Logger logger = LoggerFactory.getLogger(HandlerS3.class);
     public static final int BATCH_WRITE_LIMIT = 20;
     private final DynamoDbTable<T> dynamoDbTable;
     private final DynamoDbEnhancedClient dbEnhancedClient;
     //private static GSON gson = GSON.
 
+    /**
+     * Instantiates a new Db accessor.
+     *
+     * @param dbEnhancedClient the db enhanced client
+     * @param dynamoDbTable    the dynamo db table
+     */
     public DBAccessor(@NonNull final DynamoDbEnhancedClient dbEnhancedClient,
                       @NonNull final DynamoDbTable<T> dynamoDbTable) {
         this.dynamoDbTable = dynamoDbTable;
@@ -56,9 +65,9 @@ public class DBAccessor<T> {
     /**
      * method to fetch DDB record by partition Key
      *
-     * @param partitionKey
+     * @param partitionKey   the partition key
      * @param consistentRead - True/false
-     * @return
+     * @return record by partition key
      */
     public T getRecordByPartitionKey(@NonNull final String partitionKey,
                                      final boolean consistentRead) {
@@ -102,7 +111,9 @@ public class DBAccessor<T> {
     /**
      * method to create/update record in DDB
      *
-     * @param record
+     * @param record           the record
+     * @param partitionKeyName the partition key name
+     * @param className        the class name
      */
     public void putItem(@NonNull final T record,
                         @NonNull final String partitionKeyName,
@@ -176,11 +187,11 @@ public class DBAccessor<T> {
     /**
      * method to get records by index when secondary index has only partition key
      *
-     * @param indexName                name of index
-     * @param indexPartitionKey        partition key of secondary index
-     * @param pageSize                 numbers of records per page
-     * @param lastEvaluatedKey         lastEvaluatedKey for pagination
-     * @return
+     * @param indexName         name of index
+     * @param indexPartitionKey partition key of secondary index
+     * @param pageSize          numbers of records per page
+     * @param lastEvaluatedKey  lastEvaluatedKey for pagination
+     * @return record by index
      */
     public PaginatedResult<T> getRecordByIndex(@NonNull final String indexName,
                                                @NonNull final String indexPartitionKey,
@@ -204,6 +215,8 @@ public class DBAccessor<T> {
     }
 
     /**
+     * Gets records by index.
+     *
      * @param indexName            name of secondary index
      * @param queryEnhancedRequest request object
      * @return list of records if found else empty list

@@ -16,6 +16,9 @@ import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbUpdat
 import java.math.BigDecimal;
 import java.time.Instant;
 
+/**
+ * The type Donation dto.
+ */
 @ToString
 @Builder
 @Getter

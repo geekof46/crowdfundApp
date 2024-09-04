@@ -16,7 +16,13 @@ public final class AttributeValueUtil {
 
     }
 
-    // Encrypt last evaluated key
+    /**
+     * Encrypt string string.
+     *
+     * @param value the value
+     * @return the string
+     */
+// Encrypt last evaluated key
     public static String encryptString(@NonNull final String value) {
         try {
             return Base64.getUrlEncoder().encodeToString(value.getBytes());
@@ -26,7 +32,13 @@ public final class AttributeValueUtil {
         }
     }
 
-    // Decrypt last evaluated key
+    /**
+     * Decrypt last evaluated key string.
+     *
+     * @param encryptedValue the encrypted value
+     * @return the string
+     */
+// Decrypt last evaluated key
     public static String decryptLastEvaluatedKey(@NonNull final String encryptedValue) {
 
         try {
@@ -38,11 +50,23 @@ public final class AttributeValueUtil {
         }
     }
 
-    // Deprecate last evaluated key
+    /**
+     * Deprecate last evaluated key string.
+     *
+     * @param lastEvaluatedKey the last evaluated key
+     * @return the string
+     */
+// Deprecate last evaluated key
     public static String deprecateLastEvaluatedKey(String lastEvaluatedKey) {
         return lastEvaluatedKey + "_DEPRECATED";
     }
 
+    /**
+     * Gets next.
+     *
+     * @param lastEvaluatedKey the last evaluated key
+     * @return the next
+     */
     public static String getNext(final Map<String, AttributeValue> lastEvaluatedKey) {
         if (lastEvaluatedKey == null) {
             return "";

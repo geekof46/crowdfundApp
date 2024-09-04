@@ -25,8 +25,17 @@ import java.time.Instant;
 @NoArgsConstructor
 @DynamoDbImmutable(builder = User.UserBuilder.class)
 public class User {
+    /**
+     * The constant TABLE_NAME.
+     */
     public static final String TABLE_NAME = "Users";
+    /**
+     * The constant USER_ID.
+     */
     public static final String USER_ID = "UserId";
+    /**
+     * The constant EMAIL_ID.
+     */
     public static final String EMAIL_ID = "EmailId";
 
     @Getter(onMethod = @__({@DynamoDbAttribute(USER_ID),

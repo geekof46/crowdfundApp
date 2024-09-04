@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
+/**
+ * The type User create request.
+ */
 @ToString
 @Builder
 @Getter

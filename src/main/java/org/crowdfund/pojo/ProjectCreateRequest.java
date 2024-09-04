@@ -9,6 +9,9 @@ import lombok.NonNull;
 import java.math.BigDecimal;
 import java.time.Instant;
 
+/**
+ * The type Project create request.
+ */
 @Builder
 @Data
 @AllArgsConstructor

@@ -4,7 +4,6 @@ import org.crowdfund.models.PaginatedResultDTO;
 import org.crowdfund.models.ProjectDTO;
 import org.crowdfund.models.ProjectSaveDTO;
 import org.crowdfund.models.ProjectStatus;
-import org.crowdfund.models.db.PaginatedResult;
 import org.crowdfund.models.db.Project;
 import org.crowdfund.utils.ModelConvertor;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,16 +11,13 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import software.amazon.awssdk.enhanced.dynamodb.model.QueryEnhancedRequest;
 
-import java.util.List;
-
+import static org.crowdfund.TestUtils.*;
 import static org.crowdfund.models.db.Project.INNOVATOR_ID_INDEX;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -109,38 +105,4 @@ public class ProjectDaoTest {
 //        // Assert
 //        verify(dynamoDBAccessor).updateItem(any(Project.class), any(Integer.class), eq(Project.class));
 //    }
-
-    private Project getProject() {
-        return Project.builder()
-                .projectId("test-project-id")
-                .innovatorId("test-innovator-id")
-                .status(ProjectStatus.REQUESTED)
-                .build();
-    }
-
-    private ProjectSaveDTO getProjectSaveDTO() {
-        return ProjectSaveDTO.builder()
-                .build();
-    }
-
-    private ProjectDTO getProjectDTO() {
-        return ProjectDTO.builder()
-                .projectId("test-project-id")
-                .innovatorId("test-innovator-id")
-                .status(ProjectStatus.REQUESTED)
-                .build();
-    }
-
-    private PaginatedResult<Project> getPaginatedResult() {
-        return PaginatedResult.<Project>builder()
-               .records(List.of(getProject()))
-               .build();
-    }
-
-    private PaginatedResultDTO<ProjectDTO> getPaginatedDTOResult() {
-        return PaginatedResultDTO.<ProjectDTO>builder()
-                .records(List.of(getProjectDTO()))
-                .next("")
-                .build();
-    }
 }

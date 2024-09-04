@@ -8,6 +8,9 @@ import lombok.ToString;
 
 import java.time.Instant;
 
+/**
+ * The type User dto.
+ */
 @ToString
 @Builder
 @Getter

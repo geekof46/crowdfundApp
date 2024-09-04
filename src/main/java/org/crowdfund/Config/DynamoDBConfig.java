@@ -17,9 +17,17 @@ import software.amazon.awssdk.enhanced.dynamodb.extensions.VersionedRecordExtens
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 
+/**
+ * The type Dynamo db config.
+ */
 @Configuration
 public class DynamoDBConfig {
 
+    /**
+     * Get dynamo db client dynamo db client.
+     *
+     * @return the dynamo db client
+     */
     @Bean
     public DynamoDbClient getDynamoDbClient(){
        return DynamoDbClient.builder()
@@ -28,6 +36,12 @@ public class DynamoDBConfig {
                 .build();
     }
 
+    /**
+     * Get dynamo db enhanced client dynamo db enhanced client.
+     *
+     * @param dynamoDbClient the dynamo db client
+     * @return the dynamo db enhanced client
+     */
     @Bean
     public DynamoDbEnhancedClient getDynamoDbEnhancedClient(@NonNull final DynamoDbClient dynamoDbClient){
         return DynamoDbEnhancedClient.builder()
@@ -36,36 +50,75 @@ public class DynamoDBConfig {
                 .build();
     }
 
+    /**
+     * Get user table dynamo db table.
+     *
+     * @param dbEnhancedClient the db enhanced client
+     * @return the dynamo db table
+     */
     @Primary
     @Bean
     public DynamoDbTable<User> getUserTable(@NonNull final DynamoDbEnhancedClient dbEnhancedClient){
         return  dbEnhancedClient.table(User.TABLE_NAME, TableSchema.fromImmutableClass(User.class));
     }
 
+    /**
+     * Get project table dynamo db table.
+     *
+     * @param dbEnhancedClient the db enhanced client
+     * @return the dynamo db table
+     */
     @Primary
     @Bean
     public DynamoDbTable<Project> getProjectTable(@NonNull final DynamoDbEnhancedClient dbEnhancedClient){
         return  dbEnhancedClient.table(Project.TABLE_NAME, TableSchema.fromImmutableClass(Project.class));
     }
 
+    /**
+     * Get donation table dynamo db table.
+     *
+     * @param dbEnhancedClient the db enhanced client
+     * @return the dynamo db table
+     */
     @Primary
     @Bean
     public DynamoDbTable<Donation> getDonationTable(@NonNull final DynamoDbEnhancedClient dbEnhancedClient){
         return  dbEnhancedClient.table(Donation.TABLE_NAME, TableSchema.fromImmutableClass(Donation.class));
     }
 
+    /**
+     * Gets user db dynamo db accessor.
+     *
+     * @param dbEnhancedClient the db enhanced client
+     * @param dynamoDbTable    the dynamo db table
+     * @return the user db dynamo db accessor
+     */
     @Bean
     public DBAccessor<User> getUserDBDynamoDBAccessor(@NonNull final DynamoDbEnhancedClient dbEnhancedClient,
                                                       @NonNull final DynamoDbTable<User> dynamoDbTable) {
         return new DBAccessor<User>(dbEnhancedClient, dynamoDbTable);
     }
 
+    /**
+     * Gets donation db dynamo db accessor.
+     *
+     * @param dbEnhancedClient the db enhanced client
+     * @param dynamoDbTable    the dynamo db table
+     * @return the donation db dynamo db accessor
+     */
     @Bean
     public DBAccessor<Donation> getDonationDBDynamoDBAccessor(@NonNull final DynamoDbEnhancedClient dbEnhancedClient,
                                                               @NonNull final DynamoDbTable<Donation> dynamoDbTable) {
         return new DBAccessor<Donation>(dbEnhancedClient, dynamoDbTable);
     }
 
+    /**
+     * Gets project db dynamo db accessor.
+     *
+     * @param dbEnhancedClient the db enhanced client
+     * @param dynamoDbTable    the dynamo db table
+     * @return the project db dynamo db accessor
+     */
     @Bean
     public DBAccessor<Project> getProjectDBDynamoDBAccessor(@NonNull final DynamoDbEnhancedClient dbEnhancedClient,
                                                             @NonNull final DynamoDbTable<Project> dynamoDbTable) {

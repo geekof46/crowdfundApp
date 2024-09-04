@@ -22,6 +22,12 @@ public class UserDao {
     private final DBAccessor<User> dynamoDBAccessor;
     private final ModelConvertor modelConvertor;
 
+    /**
+     * Instantiates a new User dao.
+     *
+     * @param dynamoDBAccessor the dynamo db accessor
+     * @param modelConvertor   the model convertor
+     */
     public UserDao(@NonNull final DBAccessor<User> dynamoDBAccessor,
                    @NonNull final ModelConvertor modelConvertor) {
         this.dynamoDBAccessor = dynamoDBAccessor;
@@ -41,7 +47,7 @@ public class UserDao {
     /**
      * method to get uses by userId
      *
-     * @param userId
+     * @param userId the user id
      * @return instance of User else return null
      */
     public UserDTO getUserById(@NonNull final String userId) {

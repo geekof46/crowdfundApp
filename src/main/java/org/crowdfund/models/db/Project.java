@@ -29,11 +29,29 @@ import java.time.Instant;
 @NoArgsConstructor
 @DynamoDbImmutable(builder = Project.ProjectBuilder.class)
 public class Project {
+    /**
+     * The constant TABLE_NAME.
+     */
     public static final String TABLE_NAME = "Projects";
+    /**
+     * The constant PROJECT_ID.
+     */
     public static final String PROJECT_ID = "ProjectId";
+    /**
+     * The constant INNOVATOR_ID.
+     */
     public static final String INNOVATOR_ID = "InnovatorId";
+    /**
+     * The constant PROJECT_STATUS.
+     */
     public static final String PROJECT_STATUS = "Status";
+    /**
+     * The constant INNOVATOR_ID_INDEX.
+     */
     public static final String INNOVATOR_ID_INDEX = "InnovatorId-Index";
+    /**
+     * The constant PROJECT_STATUS_INDEX.
+     */
     public static final String PROJECT_STATUS_INDEX = "Status-Index";
 
     @Getter(onMethod = @__({@DynamoDbAttribute("ProjectId"),

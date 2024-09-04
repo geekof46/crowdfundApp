@@ -29,11 +29,29 @@ import java.time.Instant;
 @DynamoDbImmutable(builder = Donation.DonationBuilder.class)
 public class Donation {
 
+    /**
+     * The constant TABLE_NAME.
+     */
     public static final String TABLE_NAME = "Donations";
+    /**
+     * The constant DONATION_ID.
+     */
     public static final String DONATION_ID = "DonationId";
+    /**
+     * The constant DONOR_ID_INDEX.
+     */
     public static final String DONOR_ID_INDEX = "DonorId-Index";
+    /**
+     * The constant DONOR_ID.
+     */
     public static final String DONOR_ID = "DonorId";
+    /**
+     * The constant PROJECT_ID.
+     */
     public static final String PROJECT_ID = "ProjectId";
+    /**
+     * The constant PROJECT_ID_INDEX.
+     */
     public static final String PROJECT_ID_INDEX = "ProjectId-Index";
 
     @Getter(onMethod = @__({@DynamoDbAttribute(DONATION_ID), @DynamoDbPartitionKey}))

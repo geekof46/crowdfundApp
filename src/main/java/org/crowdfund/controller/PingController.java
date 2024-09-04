@@ -11,10 +11,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 
+/**
+ * The type Ping controller.
+ */
 @RestController
 @EnableWebMvc
 @ResponseBody
 public class PingController {
+    /**
+     * Ping map.
+     *
+     * @return the map
+     */
     @RequestMapping(path = "/ping", method = RequestMethod.GET)
     public Map<String, String> ping() {
         Map<String, String> pong = new HashMap<>();

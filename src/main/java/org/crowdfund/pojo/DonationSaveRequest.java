@@ -6,6 +6,9 @@ import lombok.ToString;
 
 import java.math.BigDecimal;
 
+/**
+ * The type Donation save request.
+ */
 @Builder
 @Data
 @ToString

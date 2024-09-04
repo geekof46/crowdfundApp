@@ -14,13 +14,20 @@ import org.crowdfund.exceptions.InvalidRequestException;
 public class ModelConvertor {
     private final ObjectMapper objectMapper;
 
+    /**
+     * Instantiates a new Model convertor.
+     *
+     * @param objectMapper the object mapper
+     */
     public ModelConvertor(@NonNull final ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
     }
 
     /**
      * Method to convert object of fromVale to object of toValueType.
-     * @param fromValue which is the object to be converted.
+     *
+     * @param <T>         the type parameter
+     * @param fromValue   which is the object to be converted.
      * @param toValueType which is the class which the object should be converted to.
      * @return the resulting object.
      */
@@ -36,7 +43,9 @@ public class ModelConvertor {
 
     /**
      * Method to deserialize string to object of toValueType.
-     * @param fromValue which is the object to be converted.
+     *
+     * @param <T>         the type parameter
+     * @param fromValue   which is the object to be converted.
      * @param toValueType which is the class which the object should be converted to.
      * @return the resulting object.
      */
@@ -52,6 +61,7 @@ public class ModelConvertor {
 
     /**
      * Writes the Provided Object in String Format
+     *
      * @param object Object to be written as String
      * @return String formatted Object
      */

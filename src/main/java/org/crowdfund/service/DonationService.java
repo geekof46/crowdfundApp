@@ -20,6 +20,12 @@ public class DonationService {
     private final DonationDao donationDao;
     private final ProjectService projectService;
 
+    /**
+     * Instantiates a new Donation service.
+     *
+     * @param donationDao    the donation dao
+     * @param projectService the project service
+     */
     @Autowired
     public DonationService(@NonNull final DonationDao donationDao,
                            @NonNull final ProjectService projectService) {
@@ -60,7 +66,9 @@ public class DonationService {
     /**
      * method to fetch list of donations by donorId
      *
-     * @param donorId user who donates to Project
+     * @param donorId  user who donates to Project
+     * @param pageSize the page size
+     * @param next     the next
      * @return list of donations
      */
     public PaginatedResultDTO<DonationDTO> getDonationsByDonorId(@NonNull final String donorId,

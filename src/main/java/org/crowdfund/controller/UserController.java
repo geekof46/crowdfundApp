@@ -32,11 +32,22 @@ public class UserController {
     private static final @NonNull String USER_ID_PREFIX = "USER-";
     private final UserService userService;
 
+    /**
+     * Instantiates a new User controller.
+     *
+     * @param userService the user service
+     */
     @Autowired
     public UserController(@NonNull final UserService userService) {
         this.userService = userService;
     }
 
+    /**
+     * Gets user by id.
+     *
+     * @param userId the user id
+     * @return the user by id
+     */
     @GetMapping("/users/{userId}")
     public ResponseEntity<UserDTO> getUserById(@PathVariable String userId) {
         return ResponseEntity.ok()
@@ -46,8 +57,8 @@ public class UserController {
     /**
      * method to add new user
      *
-     * @param putRequest
-     * @return
+     * @param putRequest the put request
+     * @return response entity
      */
     @PostMapping("/users")
     public ResponseEntity<Object> addUser(@RequestBody @NonNull final UserCreateRequest putRequest) {

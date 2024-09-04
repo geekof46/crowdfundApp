@@ -9,6 +9,9 @@ import lombok.NonNull;
 import java.math.BigDecimal;
 import java.time.Instant;
 
+/**
+ * The type Project update request.
+ */
 @Builder
 @Data
 @AllArgsConstructor

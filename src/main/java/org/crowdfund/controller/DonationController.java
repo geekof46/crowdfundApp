@@ -38,6 +38,11 @@ public class DonationController {
     private static final String DONATION_ID_PREFIX = "DONAT-";
     private final DonationService donationService;
 
+    /**
+     * Instantiates a new Donation controller.
+     *
+     * @param donationService the donation service
+     */
     @Autowired
     public DonationController(@NonNull final DonationService donationService) {
         this.donationService = donationService;
@@ -46,8 +51,9 @@ public class DonationController {
     /**
      * method to get donation done on project
      *
-     * @param pageSize number of donation records per page
-     * @param next     next record to start with
+     * @param projectId the project id
+     * @param pageSize  number of donation records per page
+     * @param next      next record to start with
      * @return list of donations
      */
     @GetMapping("/projects/{projectId}/donations")
@@ -64,7 +70,8 @@ public class DonationController {
     /**
      * method to add new donation
      *
-     * @param request project create request
+     * @param projectId the project id
+     * @param request   project create request
      * @return response with success or failure
      */
     @PostMapping("/projects/{projectId}/donations")

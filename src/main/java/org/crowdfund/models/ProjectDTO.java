@@ -8,6 +8,9 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.time.Instant;
 
+/**
+ * The type Project dto.
+ */
 @Builder(toBuilder = true)
 @Data
 @AllArgsConstructor

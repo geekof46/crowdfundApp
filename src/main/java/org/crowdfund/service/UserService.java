@@ -18,12 +18,19 @@ public class UserService {
 
     private final UserDao userDao;
 
+    /**
+     * Instantiates a new User service.
+     *
+     * @param userDao the user dao
+     */
     public UserService(@NonNull final UserDao userDao) {
         this.userDao = userDao;
     }
 
     /**
-     * @param userSaveDTO
+     * Save.
+     *
+     * @param userSaveDTO the user save dto
      */
     public void save(@NonNull final UserSaveDTO userSaveDTO) {
         try{
@@ -36,8 +43,10 @@ public class UserService {
     }
 
     /**
-     * @param userId
-     * @return
+     * Gets user by id.
+     *
+     * @param userId the user id
+     * @return user by id
      */
     public UserDTO getUserById(@NonNull final String userId) {
         log.info("Request for fetching user details for user id {}", userId);

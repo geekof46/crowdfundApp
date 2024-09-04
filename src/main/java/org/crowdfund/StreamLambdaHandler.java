@@ -13,6 +13,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 
+/**
+ * The type Stream lambda handler.
+ */
 public class StreamLambdaHandler implements RequestStreamHandler {
     private static SpringBootLambdaContainerHandler<AwsProxyRequest, AwsProxyResponse> handler;
     static {

@@ -6,6 +6,9 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+/**
+ * The type Response.
+ */
 @ToString
 @Builder
 @NoArgsConstructor

@@ -5,6 +5,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
 
+/**
+ * The type Paginated response.
+ *
+ * @param <T> the type parameter
+ */
 @Builder
 @ToString
 @Data
