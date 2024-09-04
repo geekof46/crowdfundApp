@@ -37,6 +37,12 @@ public class UserDao {
         this.modelConvertor = new ModelConvertor(objectMapper);
     }
 
+    public UserDao(@NonNull final DBAccessor<User> dynamoDBAccessor,
+                   @NonNull final ModelConvertor modelConvertor) {
+        this.dynamoDBAccessor = dynamoDBAccessor;
+        this.modelConvertor = modelConvertor;
+    }
+
     /**
      * method to save or update DDB user record
      *

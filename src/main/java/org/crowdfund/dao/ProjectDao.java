@@ -12,6 +12,7 @@ import org.crowdfund.models.ProjectSaveDTO;
 import org.crowdfund.models.ProjectStatus;
 import org.crowdfund.models.db.PaginatedResult;
 import org.crowdfund.models.db.Project;
+import org.crowdfund.models.db.User;
 import org.crowdfund.utils.AttributeValueUtil;
 import org.crowdfund.utils.ModelConvertor;
 import org.springframework.stereotype.Repository;
@@ -48,6 +49,12 @@ public class ProjectDao {
                       @NonNull final ObjectMapper objectMapper) {
         this.dynamoDBAccessor = new DBAccessor<>(dbEnhancedClient, dynamoDbTable);
         this.modelConvertor = new ModelConvertor(objectMapper);
+    }
+
+    public ProjectDao(@NonNull final DBAccessor<Project> dynamoDBAccessor,
+                   @NonNull final ModelConvertor modelConvertor) {
+        this.dynamoDBAccessor = dynamoDBAccessor;
+        this.modelConvertor = modelConvertor;
     }
 
     /**

@@ -2,10 +2,10 @@
 //
 //import org.crowdfund.dao.ProjectDao;
 //import org.crowdfund.exceptions.InvalidRequestException;
-//import org.crowdfund.models.ProjectStatus;
+//import org.crowdfund.models.PaginatedResultDTO;
 //import org.crowdfund.models.ProjectDTO;
 //import org.crowdfund.models.ProjectSaveDTO;
-//import org.crowdfund.models.PaginatedResultDTO;
+//import org.crowdfund.models.ProjectStatus;
 //import org.junit.jupiter.api.Test;
 //import org.junit.jupiter.api.extension.ExtendWith;
 //import org.mockito.InjectMocks;
@@ -13,6 +13,7 @@
 //import org.mockito.junit.jupiter.MockitoExtension;
 //
 //import java.math.BigDecimal;
+//import java.util.List;
 //
 //import static org.junit.jupiter.api.Assertions.assertEquals;
 //import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -31,7 +32,7 @@
 //    @Test
 //    public void testSave() {
 //        // Arrange
-//        ProjectSaveDTO projectSaveDTO = new ProjectSaveDTO();
+//        ProjectSaveDTO projectSaveDTO = getProjectSaveDTO();
 //
 //        // Act
 //        projectService.save(projectSaveDTO);
@@ -49,7 +50,8 @@
 //        String next = "test-next";
 //
 //        // Act
-//        PaginatedResultDTO<ProjectDTO> result = projectService.getProjectsByInnovatorIdAndStatus(innovatorId, status, limit, next);
+//        PaginatedResultDTO<ProjectDTO> result =
+//                projectService.getProjectsByInnovatorIdAndStatus(innovatorId, status, limit, next);
 //
 //        // Assert
 //        assertEquals(new PaginatedResultDTO<>(), result);
@@ -103,5 +105,25 @@
 //
 //        // Act and Assert
 //        assertThrows(InvalidRequestException.class, () -> projectService.updateProjectForDonationAmount(projectId, donationAmount));
+//    }
+//
+//    private ProjectSaveDTO getProjectSaveDTO() {
+//        return ProjectSaveDTO.builder()
+//                .build();
+//    }
+//
+//    private ProjectDTO getProjectDTO() {
+//        return ProjectDTO.builder()
+//                .projectId("test-project-id")
+//                .innovatorId("test-innovator-id")
+//                .status(ProjectStatus.REQUESTED)
+//                .build();
+//    }
+//
+//    private PaginatedResultDTO<ProjectDTO> getPaginatedDTOResult() {
+//        return PaginatedResultDTO.<ProjectDTO>builder()
+//                .records(List.of(getProjectDTO()))
+//                .next("")
+//                .build();
 //    }
 //}

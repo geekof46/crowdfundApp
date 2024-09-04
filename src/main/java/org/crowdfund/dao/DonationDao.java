@@ -7,6 +7,7 @@ import org.crowdfund.models.DonationSaveDTO;
 import org.crowdfund.models.PaginatedResultDTO;
 import org.crowdfund.models.db.Donation;
 import org.crowdfund.models.db.PaginatedResult;
+import org.crowdfund.models.db.Project;
 import org.crowdfund.utils.AttributeValueUtil;
 import org.crowdfund.utils.ModelConvertor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,12 @@ public class DonationDao {
                        @NonNull final ObjectMapper objectMapper) {
         this.dynamoDBAccessor = new DBAccessor<>(dbEnhancedClient, dynamoDbTable);
         this.modelConvertor = new ModelConvertor(objectMapper);
+    }
+
+    public DonationDao(@NonNull final DBAccessor<Donation> dynamoDBAccessor,
+                      @NonNull final ModelConvertor modelConvertor) {
+        this.dynamoDBAccessor = dynamoDBAccessor;
+        this.modelConvertor = modelConvertor;
     }
 
     /**

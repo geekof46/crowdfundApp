@@ -1,6 +1,7 @@
 package org.crowdfund.Config;
 
 import lombok.NonNull;
+import org.crowdfund.dao.DBAccessor;
 import org.crowdfund.models.db.Donation;
 import org.crowdfund.models.db.Project;
 import org.crowdfund.models.db.User;
@@ -51,5 +52,23 @@ public class DynamoDBConfig {
     @Bean
     public DynamoDbTable<Donation> getDonationTable(@NonNull final DynamoDbEnhancedClient dbEnhancedClient){
         return  dbEnhancedClient.table(Donation.TABLE_NAME, TableSchema.fromImmutableClass(Donation.class));
+    }
+
+    @Bean
+    public DBAccessor<User> getUserDBDynamoDBAccessor(@NonNull final DynamoDbEnhancedClient dbEnhancedClient,
+                                                      @NonNull final DynamoDbTable<User> dynamoDbTable) {
+        return new DBAccessor<User>(dbEnhancedClient, dynamoDbTable);
+    }
+
+    @Bean
+    public DBAccessor<Donation> getDonationDBDynamoDBAccessor(@NonNull final DynamoDbEnhancedClient dbEnhancedClient,
+                                                              @NonNull final DynamoDbTable<Donation> dynamoDbTable) {
+        return new DBAccessor<Donation>(dbEnhancedClient, dynamoDbTable);
+    }
+
+    @Bean
+    public DBAccessor<Project> getProjectDBDynamoDBAccessor(@NonNull final DynamoDbEnhancedClient dbEnhancedClient,
+                                                            @NonNull final DynamoDbTable<Project> dynamoDbTable) {
+        return new DBAccessor<Project>(dbEnhancedClient, dynamoDbTable);
     }
 }
